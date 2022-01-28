@@ -2,40 +2,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class DatabaseService {
-  Future addQuizData(Map quizData, String quizId) async {
-    // await FirebaseFirestore.instance
-    //     .collection("Quiz")
-    //     .doc(quizId)
-    //     .set(quizData)
-    //     .catchError((e) => print(e.toString()));
-  }
-
-  Future<void> addQuestionData(Map questionData, String quizId) async {
-    // await FirebaseFirestore.instance
-    //     .collection("Quiz")
-    //     .doc(quizId)
-    //     .collection("QNA")
-    //     .add(questionData)
-    //     .catchError((e) => print(e.toString()));
+  Future addQuizData(Map<String, dynamic> quizData, String quizId) async {
+    await FirebaseFirestore.instance
+        .collection("Books")
+        .doc(quizId)
+        .set(quizData)
+        .catchError((e) => print(e.toString()));
   }
 
   getQuizData() async {
-    return FirebaseFirestore.instance.collection("Quiz").snapshots();
+    return FirebaseFirestore.instance.collection("Books").snapshots();
   }
 
   deleteQuiz(quizId) async {
+    // await FirebaseFirestore.instance.collection('Quiz').doc(quizId).delete();
+
     await FirebaseFirestore.instance
-        .collection('Quiz')
-        .doc(quizId)
-        .collection("QNA")
-        .get()
-        .then((snapshot) {
-      for (DocumentSnapshot ds in snapshot.docs) {
-        ds.reference.delete();
-      }
-    });
-    await FirebaseFirestore.instance
-        .collection('Quiz')
+        .collection('Books')
         .doc(quizId)
         .get()
         .then((res) {
@@ -43,7 +26,7 @@ class DatabaseService {
           FirebaseStorage.instance.refFromURL(res.get('quizImgUrl')).delete();
       print(str);
     });
-    await FirebaseFirestore.instance.collection("Quiz").doc(quizId).delete();
+    await FirebaseFirestore.instance.collection("Books").doc(quizId).delete();
   }
 
   uploadUserInfo(userMap, uid) {

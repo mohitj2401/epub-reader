@@ -2,8 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:our_books/screens/add_books.dart';
 import 'package:our_books/screens/book_screen.dart';
+import 'package:our_books/screens/create_quiz.dart';
 import 'package:our_books/screens/signin.dart';
 import 'package:our_books/screens/signup.dart';
+import 'package:our_books/screens/home.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,7 +33,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: SignUp(),
+      home: Home(),
     );
   }
 }

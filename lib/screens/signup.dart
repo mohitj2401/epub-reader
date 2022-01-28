@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:our_books/helpers/helpers.dart';
+import 'package:our_books/screens/add_books.dart';
 import 'package:our_books/screens/book_screen.dart';
 import 'package:our_books/screens/signin.dart';
 import 'package:our_books/services/auth.dart';
@@ -45,7 +46,7 @@ class _SignUpState extends State<SignUp> {
           HelperFunctions.saveUserRole('user');
 
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => BookScreen()));
+              context, MaterialPageRoute(builder: (context) => AddBook()));
         } else {
           setState(() {
             isLoading = false;
@@ -61,7 +62,7 @@ class _SignUpState extends State<SignUp> {
       appBar: AppBar(
         title: Center(
             child: Text(
-          "Athena",
+          "Welcome to Ours Book",
           style: TextStyle(color: Colors.blue, fontSize: 24),
         )),
         iconTheme: IconThemeData(color: Colors.black),
@@ -85,7 +86,14 @@ class _SignUpState extends State<SignUp> {
                       child: Column(
                         children: <Widget>[
                           showAlert(),
-                          Spacer(),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 40, top: 40),
+                            child: Text(
+                              "SignUp",
+                              style: TextStyle(
+                                  color: Colors.blueGrey, fontSize: 30),
+                            ),
+                          ),
                           TextFormField(
                             validator: (value) {
                               if (value != null) {
@@ -201,7 +209,7 @@ class _SignUpState extends State<SignUp> {
   }
 
   Widget showAlert() {
-    if (authService.error != null) {
+    if (authService.error != '') {
       return Container(
         color: Colors.amberAccent,
         width: double.infinity,
