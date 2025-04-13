@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
-import 'package:our_books/helpers/helpers.dart';
-import 'package:our_books/screens/signup.dart';
-import 'package:our_books/services/auth.dart';
-import 'package:our_books/services/database.dart';
+import 'package:our_book_v2/helpers/helpers.dart';
+import 'package:our_book_v2/screens/signup.dart';
+import 'package:our_book_v2/services/auth.dart';
+import 'package:our_book_v2/services/database.dart';
 
 class SignIn extends StatefulWidget {
   @override

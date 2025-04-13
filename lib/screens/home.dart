@@ -1,6 +1,6 @@
-import 'package:our_books/helpers/helpers.dart';
-import 'package:our_books/services/database.dart';
-import 'package:our_books/screens/create_quiz.dart';
+import 'package:our_book_v2/helpers/helpers.dart';
+import 'package:our_book_v2/services/database.dart';
+import 'package:our_book_v2/screens/create_quiz.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';

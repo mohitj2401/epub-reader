@@ -1,11 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:our_books/screens/add_books.dart';
-import 'package:our_books/screens/book_screen.dart';
-import 'package:our_books/screens/create_quiz.dart';
-import 'package:our_books/screens/signin.dart';
-import 'package:our_books/screens/signup.dart';
-import 'package:our_books/screens/home.dart';
+import 'package:our_book_v2/screens/add_books.dart';
+import 'package:our_book_v2/screens/book_screen.dart';
+import 'package:our_book_v2/screens/create_quiz.dart';
+import 'package:our_book_v2/screens/signin.dart';
+import 'package:our_book_v2/screens/signup.dart';
+import 'package:our_book_v2/screens/home.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:our_books/helpers/helpers.dart';
-import 'package:our_books/screens/book_screen.dart';
-import 'package:our_books/screens/home.dart';
-import 'package:our_books/services/database.dart';
+import 'package:our_book_v2/helpers/helpers.dart';
+import 'package:our_book_v2/screens/book_screen.dart';
+import 'package:our_book_v2/screens/home.dart';
+import 'package:our_book_v2/services/database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';

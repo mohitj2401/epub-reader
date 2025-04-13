@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
-import 'package:our_books/helpers/helpers.dart';
-import 'package:our_books/screens/add_books.dart';
-import 'package:our_books/screens/book_screen.dart';
-import 'package:our_books/screens/signin.dart';
-import 'package:our_books/services/auth.dart';
-import 'package:our_books/services/database.dart';
+import 'package:our_book_v2/helpers/helpers.dart';
+import 'package:our_book_v2/screens/add_books.dart';
+import 'package:our_book_v2/screens/book_screen.dart';
+import 'package:our_book_v2/screens/signin.dart';
+import 'package:our_book_v2/services/auth.dart';
+import 'package:our_book_v2/services/database.dart';
 
 class SignUp extends StatefulWidget {
   @override
