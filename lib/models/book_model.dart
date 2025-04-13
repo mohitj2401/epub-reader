@@ -1,58 +1,65 @@
+import 'dart:typed_data';
+
 class BookModel {
+  final String filePath;
   final String title;
-  final List<String> author;
-  final int? publishedYear;
-  bool status;
-  final int? coverId;
+  final Uint8List? image;
+  final List<String?>? authors;
+  final String status;
+  final int lastReadPage;
+
   BookModel({
+    required this.filePath,
     required this.title,
-    required this.author,
-    required this.publishedYear,
-    this.status = false,
-    this.coverId,
+    this.image,
+    this.authors,
+    required this.status,
+    required this.lastReadPage,
   });
 
-  BookModel copyWith({
-    String? title,
-    List<String>? author,
-    int? publishedYear,
-    bool? status,
-    int? coverId,
-  }) {
+  factory BookModel.fromMap(Map<String, dynamic> map) {
     return BookModel(
-      title: title ?? this.title,
-      author: author ?? this.author,
-      publishedYear: publishedYear ?? this.publishedYear,
-      status: status ?? this.status,
-      coverId: coverId ?? this.coverId,
+      filePath: map['filePath'],
+      title: map['title'],
+      image: map['image'] != null ? Uint8List.fromList(map['image']) : null,
+      authors: map['authors'] != null
+          ? (map['authors'] as String)
+              .split(',')
+              .map((e) => e.trim())
+              .where((e) => e.isNotEmpty)
+              .toList()
+          : null,
+      status: map['status'],
+      lastReadPage: map['lastReadPage'],
     );
   }
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
+    return {
+      'filePath': filePath,
       'title': title,
-      'author': author,
-      'first_publish_year': publishedYear,
+      'image': image,
+      'authors': authors?.join(','),
       'status': status,
-      'coverId': coverId,
+      'lastReadPage': lastReadPage,
     };
   }
 
-  factory BookModel.fromMap(Map<String, dynamic> map) {
+  BookModel copyWith({
+    String? filePath,
+    String? title,
+    Uint8List? image,
+    List<String?>? authors,
+    String? status,
+    int? lastReadPage,
+  }) {
     return BookModel(
-      title: map['title'] as String,
-      author: map['author_names'] == null && map["author_name"] == null
-          ? []
-          : map['author_names'] == null
-              ? List<String>.from(
-                  (map['author_name']),
-                )
-              : List<String>.from(
-                  (map['author_names']),
-                ),
-      publishedYear: map['first_publish_year'],
-      status: false,
-      coverId: map['cover_id'] != null ? map['cover_id'] as int : null,
+      filePath: filePath ?? this.filePath,
+      title: title ?? this.title,
+      image: image ?? this.image,
+      authors: authors ?? this.authors,
+      status: status ?? this.status,
+      lastReadPage: lastReadPage ?? this.lastReadPage,
     );
   }
 }

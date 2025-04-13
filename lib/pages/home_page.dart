@@ -1,11 +1,12 @@
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:epubx/epubx.dart';
 import 'package:our_book_v2/bloc/book_bloc.dart';
-import 'package:our_book_v2/pages/search_page.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:media_store_plus/media_store_plus.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter/src/widgets/image.dart' as imgWdget;
+import 'package:image/image.dart' as imgS;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,24 +16,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  
-  Future<void> pickPdfFiles() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['pdf'],
-      allowMultiple: true,
-    );
-
-    if (result != null) {
-      List<String> files = result.paths.whereType<String>().toList();
-      print("Picked PDF files: $files");
-    }
-  }
+  List<File> bookList = [];
+  List<List<String>> bookPropertyList = [];
+  List<File> scannedFiles = [];
+  List<EpubBook> books = [];
 
   @override
   void initState() {
     context.read<BookBloc>().add(GetBooksEvent());
-    pickPdfFiles();
     // TODO: implement initState
     super.initState();
   }
@@ -41,13 +32,15 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Books"),
+        title: const Text("Books"),
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(context, SearchPage.route());
+              context.read<BookBloc>().add(ScanBookEvent());
+
+              // Navigator.push(context, SearchPage.route());
             },
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.find_in_page),
           )
         ],
       ),
@@ -59,12 +52,35 @@ class _HomePageState extends State<HomePage> {
         },
         builder: (context, state) {
           if (state is BookDisplaySuccess) {
+            if (state.books.isEmpty) {
+              return Container(
+                padding: EdgeInsets.all(8),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text("No Epud Exist please choose an option"),
+                    ElevatedButton(
+                      onPressed: () {
+                        context.read<BookBloc>().add(ScanBookEvent());
+                      },
+                      child: Text("Scan For Epub"),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: Text("Select Epub"),
+                    ),
+                  ],
+                ),
+              );
+            }
             return RefreshIndicator(
               onRefresh: () async {
                 context.read<BookBloc>().add(GetBooksEvent());
               },
               child: ListView.builder(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 itemCount: state.books.length,
                 itemBuilder: (context, index) {
                   return Card(
@@ -74,17 +90,16 @@ class _HomePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Flexible(
-                            child: Image.network(
-                              "https://covers.openlibrary.org/b/id/${state.books[index].coverId}-M.jpg",
-                              // loadingBuilder:
-                              //     (context, child, loadingProgress) => Icon(
-                              //   Icons.image,
-                              //   applyTextScaling: true,
-                              // ),
-                              // height: 500,
-                            ),
+                            child: state.books[index].image != null
+                                ? imgWdget.Image.memory(
+                                    state.books[index].image!,
+                                  )
+                                : const Icon(
+                                    Icons.broken_image_outlined,
+                                    size: 100,
+                                  ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           Flexible(
@@ -93,59 +108,59 @@ class _HomePageState extends State<HomePage> {
                               children: [
                                 Text(
                                   state.books[index].title,
-                                  style: TextStyle(fontSize: 18),
+                                  style: const TextStyle(fontSize: 18),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 20,
                                 ),
                                 Text(
-                                  "Authors : ${state.books[index].author.join(" , ")}",
+                                  "Authors : ${state.books[index].authors?.join(" , ")}",
                                   style: TextStyle(
                                     fontSize: 16,
                                     color:
                                         Theme.of(context).colorScheme.secondary,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 20,
                                 ),
-                                InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      state.books[index].status =
-                                          !state.books[index].status;
-                                    });
-                                  },
-                                  child: AnimatedContainer(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 5, horizontal: 10),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: !state.books[index].status
-                                            ? Colors.green
-                                            : Colors.transparent,
-                                      ),
-                                      color: state.books[index].status
-                                          ? Colors.green
-                                          : Colors.transparent,
-                                    ),
-                                    duration: Duration(milliseconds: 200),
-                                    child: state.books[index].status
-                                        ? Text("Read")
-                                        : Text("UnRead"),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Text(
-                                  "Published: ${state.books[index].publishedYear}",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color:
-                                        Theme.of(context).colorScheme.tertiary,
-                                  ),
-                                ),
+                                // InkWell(
+                                //   onTap: () {
+                                //     setState(() {
+                                //       state.books[index].status =
+                                //           !state.books[index].status;
+                                //     });
+                                //   },
+                                //   child: AnimatedContainer(
+                                //     padding: EdgeInsets.symmetric(
+                                //         vertical: 5, horizontal: 10),
+                                //     decoration: BoxDecoration(
+                                //       border: Border.all(
+                                //         color: !state.books[index].status
+                                //             ? Colors.green
+                                //             : Colors.transparent,
+                                //       ),
+                                //       color: state.books[index].status
+                                //           ? Colors.green
+                                //           : Colors.transparent,
+                                //     ),
+                                //     duration: Duration(milliseconds: 200),
+                                //     child: state.books[index].status
+                                //         ? Text("Read")
+                                //         : Text("UnRead"),
+                                //   ),
+                                // ),
+                                // SizedBox(
+                                //   height: 20,
+                                // ),
+                                // Text(
+                                //   "Published: ${state.books[index].publishedYear}",
+                                //   style: TextStyle(
+                                //     fontSize: 14,
+                                //     color:
+                                //         Theme.of(context).colorScheme.tertiary,
+                                //   ),
+                                // ),
                               ],
                             ),
                           ),
@@ -157,7 +172,7 @@ class _HomePageState extends State<HomePage> {
               ),
             );
           }
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         },

@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
         title: "Books",
         debugShowCheckedModeBanner: false,
         theme: ThemeData.dark(useMaterial3: true),
-        home: const HomePage());
+      home: const HomePage(),
+    );
   }
 }
