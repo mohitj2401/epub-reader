@@ -1,5 +1,5 @@
-import 'package:book_read/exceptions/server_exception.dart';
-import 'package:book_read/models/book_model.dart';
+import 'package:our_book_v2/exceptions/server_exception.dart';
+import 'package:our_book_v2/models/book_model.dart';
 import 'package:dio/dio.dart';
 
 abstract interface class LocalDataSource {

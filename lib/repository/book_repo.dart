@@ -1,7 +1,7 @@
-import 'package:book_read/datasource/book_datasource.dart';
-import 'package:book_read/errors/failure.dart';
-import 'package:book_read/exceptions/server_exception.dart';
-import 'package:book_read/models/book_model.dart';
+import 'package:our_book_v2/datasource/book_datasource.dart';
+import 'package:our_book_v2/errors/failure.dart';
+import 'package:our_book_v2/exceptions/server_exception.dart';
+import 'package:our_book_v2/models/book_model.dart';
 import 'package:fpdart/fpdart.dart';
 
 abstract interface class BookRepository {

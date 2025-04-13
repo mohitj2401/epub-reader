@@ -1,5 +1,5 @@
-import 'package:book_read/bloc/book_bloc.dart';
-import 'package:book_read/pages/search_page.dart';
+import 'package:our_book_v2/bloc/book_bloc.dart';
+import 'package:our_book_v2/pages/search_page.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';

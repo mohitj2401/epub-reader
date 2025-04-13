@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
-import 'package:book_read/models/book_model.dart';
-import 'package:book_read/usecases/book_usecase.dart';
-import 'package:book_read/usecases/search_usecase.dart';
-import 'package:book_read/usecases/usecase.dart';
+import 'package:our_book_v2/models/book_model.dart';
+import 'package:our_book_v2/usecases/book_usecase.dart';
+import 'package:our_book_v2/usecases/search_usecase.dart';
+import 'package:our_book_v2/usecases/usecase.dart';
 import 'package:meta/meta.dart';
 
 part 'book_event.dart';

@@ -1,6 +1,6 @@
-import 'package:book_read/bloc/book_bloc.dart';
-import 'package:book_read/dependencies/init_dependencies.dart';
-import 'package:book_read/pages/home_page.dart';
+import 'package:our_book_v2/bloc/book_bloc.dart';
+import 'package:our_book_v2/dependencies/init_dependencies.dart';
+import 'package:our_book_v2/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
