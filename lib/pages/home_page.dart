@@ -1,12 +1,10 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:epubx/epubx.dart';
 import 'package:our_book_v2/bloc/book_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/src/widgets/image.dart' as imgWdget;
-import 'package:image/image.dart' as imgS;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -54,21 +52,21 @@ class _HomePageState extends State<HomePage> {
           if (state is BookDisplaySuccess) {
             if (state.books.isEmpty) {
               return Container(
-                padding: EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text("No Epud Exist please choose an option"),
+                    const Text("No Epud Exist please choose an option"),
                     ElevatedButton(
                       onPressed: () {
                         context.read<BookBloc>().add(ScanBookEvent());
                       },
-                      child: Text("Scan For Epub"),
+                      child: const Text("Scan For Epub"),
                     ),
                     ElevatedButton(
                       onPressed: () {},
-                      child: Text("Select Epub"),
+                      child: const Text("Select Epub"),
                     ),
                   ],
                 ),
