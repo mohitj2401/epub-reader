@@ -95,6 +95,7 @@ class LocalDatasourceImp implements LocalDatasource {
             authors: epubBook.AuthorList,
             title: epubBook.Title ?? "Unknown",
             image: uint8list,
+            type: "local",
           ));
         } catch (e) {
           print("Failed to read ${file.path}: $e");

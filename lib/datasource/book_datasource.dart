@@ -34,7 +34,8 @@ class BookDataSourceImp implements BookDataSource {
         image BLOB,
         authors TEXT,
         status TEXT,
-        lastReadPage INTEGER
+        lastReadPage INTEGER,
+        type TEXT,
       )
         ''');
       },

@@ -7,6 +7,7 @@ class BookModel {
   final List<String?>? authors;
   final String status;
   final int lastReadPage;
+  final String type;
 
   BookModel({
     required this.filePath,
@@ -15,6 +16,7 @@ class BookModel {
     this.authors,
     required this.status,
     required this.lastReadPage,
+    required this.type,
   });
 
   factory BookModel.fromMap(Map<String, dynamic> map) {
@@ -31,6 +33,7 @@ class BookModel {
           : null,
       status: map['status'],
       lastReadPage: map['lastReadPage'],
+      type: map["type"],
     );
   }
 
@@ -42,12 +45,14 @@ class BookModel {
       'authors': authors?.join(','),
       'status': status,
       'lastReadPage': lastReadPage,
+      "type": type,
     };
   }
 
   BookModel copyWith({
     String? filePath,
     String? title,
+    String? type,
     Uint8List? image,
     List<String?>? authors,
     String? status,
@@ -57,6 +62,7 @@ class BookModel {
       filePath: filePath ?? this.filePath,
       title: title ?? this.title,
       image: image ?? this.image,
+      type: type ?? this.type,
       authors: authors ?? this.authors,
       status: status ?? this.status,
       lastReadPage: lastReadPage ?? this.lastReadPage,
