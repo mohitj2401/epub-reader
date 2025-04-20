@@ -6,6 +6,7 @@ import 'package:our_book_v2/usecases/book_usecase.dart';
 import 'package:our_book_v2/usecases/scanbooks_usecase.dart';
 import 'package:our_book_v2/usecases/search_usecase.dart';
 import 'package:get_it/get_it.dart';
+import 'package:our_book_v2/usecases/update_book_usecase.dart';
 
 final serviceLocator = GetIt.instance;
 
@@ -18,12 +19,14 @@ Future<void> initDependancies() async {
   serviceLocator.registerFactory(() => GetBooks(serviceLocator()));
   serviceLocator.registerFactory(() => SearchBooks(serviceLocator()));
   serviceLocator.registerFactory(() => ScanBooks(serviceLocator()));
+  serviceLocator.registerFactory(() => UpdateBook(serviceLocator()));
 
   serviceLocator.registerLazySingleton(() =>
       BookBloc(
         getBooks: serviceLocator(),
         searchBooks: serviceLocator(),
         scanBooks: serviceLocator(),
+        updateBook: serviceLocator(),
       ));
 
   serviceLocator.registerFactory<LocalDatasource>(

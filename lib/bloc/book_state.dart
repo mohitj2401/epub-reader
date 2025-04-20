@@ -21,3 +21,7 @@ final class BookFailure extends BookState {
   final String message;
   BookFailure(this.message);
 }
+final class UpdateBookSuccess extends BookState {
+  final bool status;
+  UpdateBookSuccess(this.status);
+}

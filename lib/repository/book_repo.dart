@@ -9,6 +9,13 @@ abstract interface class BookRepository {
   Future<Either<Failure, List<BookModel>>> fetchBooks();
   Future<Either<Failure, List<BookModel>>> scanBooks();
   Future<Either<Failure, List<BookModel>>> searchBooks({required String title});
+  Future<Either<Failure, bool>> updateBook(
+      {required int id,
+      String? newTitle,
+      List<String>? newAuthors,
+      List<String>? highlights,
+      String? status,
+      String? lastReadPage});
 }
 
 class BookRepositoryImp implements BookRepository {
@@ -37,12 +44,33 @@ class BookRepositoryImp implements BookRepository {
     }
   }
 
-
   @override
   Future<Either<Failure, List<BookModel>>> scanBooks() async {
     try {
       final books = await localDatasource.fetchBooksFromStorage();
       return right(books);
+    } on ServerException catch (e) {
+      return left(Failure(e.message));
+    }
+  }
+  
+  @override
+  Future<Either<Failure, bool>> updateBook(
+      {required int id,
+      String? newTitle,
+      List<String>? newAuthors,
+      List<String>? highlights,
+      String? status,
+      String? lastReadPage}) async {
+    try {
+      final res = await bookDataSource.updateBookDetails(
+          id: id,
+          newTitle: newTitle,
+          newAuthors: newAuthors,
+          status: status,
+          lastReadPage: lastReadPage,
+          highlights: highlights);
+      return right(res);
     } on ServerException catch (e) {
       return left(Failure(e.message));
     }

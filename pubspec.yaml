@@ -46,6 +46,9 @@ dependencies:
   logger: ^2.5.0
   epubx: ^4.0.0
   sqflite: ^2.4.1
+  shared_preferences: ^2.5.3
+  flutter_epub_viewer: ^1.2.1
+  free_english_dictionary: ^0.0.3
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:logger/logger.dart';
 import 'package:our_book_v2/exceptions/server_exception.dart';
 import 'package:our_book_v2/models/book_model.dart';
 import 'package:sqflite/sqflite.dart';
@@ -8,10 +9,20 @@ abstract interface class BookDataSource {
   Future<List<BookModel>> fetchBooks();
   Future<List<BookModel>> searchBooks({required String title});
   Future<void> insertBooks(List<BookModel> books);
+  Future<void> updateLastReadPage(int id, String page);
+  Future<void> updateHighlights(int id, String highlightsJson);
+  Future<bool> updateBookDetails(
+      {required int id,
+      String? newTitle,
+      List<String>? newAuthors,
+      List<String>? highlights,
+      String? status,
+      String? lastReadPage});
 }
 
 class BookDataSourceImp implements BookDataSource {
   Database? _database;
+  Logger logger = Logger();
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -25,17 +36,19 @@ class BookDataSourceImp implements BookDataSource {
 
     return openDatabase(
       path,
-      version: 1,
+      version: 3,
       onCreate: (db, version) async {
         await db.execute('''
       CREATE TABLE books (
-        filePath TEXT PRIMARY KEY,
+        id INTEGER PRIMARY KEY,
+        filePath UNIQUE,
         title TEXT,
         image BLOB,
         authors TEXT,
         status TEXT,
-        lastReadPage INTEGER,
+        lastReadPage TEXT,
         type TEXT,
+        highlights TEXT
       )
         ''');
       },
@@ -47,6 +60,7 @@ class BookDataSourceImp implements BookDataSource {
     try {
       final db = await database;
       final result = await db.query('books');
+      logger.d(result.length);
       return result.map((e) => BookModel.fromMap(e)).toList();
     } catch (e) {
       throw ServerException("Failed to fetch books: $e");
@@ -83,6 +97,72 @@ class BookDataSourceImp implements BookDataSource {
       await batch.commit(noResult: true);
     } catch (e) {
       throw ServerException("Failed to insert books: $e");
+    }
+  }
+
+  @override
+  Future<void> updateLastReadPage(int id, String page) async {
+    try {
+      final db = await database;
+      await db.update(
+        'books',
+        {'lastReadPage': page},
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+    } catch (e) {
+      throw ServerException("Failed to update last read page: $e");
+    }
+  }
+
+  // Update highlights (expects a JSON string)
+  @override
+  Future<void> updateHighlights(int id, String highlightsJson) async {
+    try {
+      final db = await database;
+      await db.update(
+        'books',
+        {'highlights': highlightsJson},
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+    } catch (e) {
+      throw ServerException("Failed to update highlights: $e");
+    }
+  }
+
+  @override
+  Future<bool> updateBookDetails(
+      {required int id,
+      String? newTitle,
+      List<String>? newAuthors,
+      List<String>? highlights,
+      String? status,
+      String? lastReadPage}) async {
+    try {
+      final db = await database;
+
+      // Prepare the update map
+      final Map<String, Object?> updateFields = {};
+      if (lastReadPage != null) updateFields['lastReadPage'] = lastReadPage;
+      if (newTitle != null) updateFields['title'] = newTitle;
+      if (status != null) updateFields['status'] = status;
+      if (highlights != null)
+        updateFields['highlights'] = highlights.join('&@');
+      ;
+      if (newAuthors != null) updateFields['authors'] = newAuthors.join(',');
+
+      if (updateFields.isEmpty) return false; // Nothing to update
+
+      await db.update(
+        'books',
+        updateFields,
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+      return true;
+    } catch (e) {
+      throw ServerException("Failed to update book details: $e");
     }
   }
 }

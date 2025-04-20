@@ -91,7 +91,6 @@ class LocalDatasourceImp implements LocalDatasource {
           books.add(BookModel(
             filePath: file.path,
             status: "new",
-            lastReadPage: 0,
             authors: epubBook.AuthorList,
             title: epubBook.Title ?? "Unknown",
             image: uint8list,
