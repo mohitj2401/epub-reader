@@ -147,9 +147,9 @@ class BookDataSourceImp implements BookDataSource {
       if (lastReadPage != null) updateFields['lastReadPage'] = lastReadPage;
       if (newTitle != null) updateFields['title'] = newTitle;
       if (status != null) updateFields['status'] = status;
-      if (highlights != null)
+      if (highlights != null) {
         updateFields['highlights'] = highlights.join('&@');
-      ;
+      }
       if (newAuthors != null) updateFields['authors'] = newAuthors.join(',');
 
       if (updateFields.isEmpty) return false; // Nothing to update

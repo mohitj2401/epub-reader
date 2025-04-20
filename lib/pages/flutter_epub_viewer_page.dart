@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -161,9 +160,9 @@ class _FlutterEpubViewerPageState extends State<FlutterEpubViewerPage> {
                                     await FreeDictionary.getWordMeaning(
                                         word: "stairs");
                                 // print meanings
-                                meanings.forEach((val) {
+                                for (var val in meanings) {
                                   print(val);
-                                });
+                                }
                               },
                             ),
                             // ContextMenuItem(

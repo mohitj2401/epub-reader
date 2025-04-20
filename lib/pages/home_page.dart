@@ -146,7 +146,7 @@ class _HomePageState extends State<HomePage> {
                                 InkWell(
                                   onTap: () {},
                                   child: AnimatedContainer(
-                                    padding: EdgeInsets.symmetric(
+                                    padding: const EdgeInsets.symmetric(
                                         vertical: 5, horizontal: 10),
                                     decoration: BoxDecoration(
                                       border: Border.all(
@@ -158,13 +158,13 @@ class _HomePageState extends State<HomePage> {
                                           ? Colors.green
                                           : Colors.transparent,
                                     ),
-                                    duration: Duration(milliseconds: 200),
+                                    duration: const Duration(milliseconds: 200),
                                     child: books[index].status == "read"
-                                        ? Text("Read")
-                                        : Text("UnRead"),
+                                        ? const Text("Read")
+                                        : const Text("UnRead"),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 20,
                                 ),
                                 // Text(
