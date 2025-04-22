@@ -6,7 +6,7 @@
 <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/>
  <uses-permission android:name="android.permission.INTERNET" />
     <application
-        android:label="our_book_v2"
+        android:label="Epub Reader"
          xmlns:tools="http://schemas.android.com/tools"
          android:usesCleartextTraffic="true"
    android:requestLegacyExternalStorage="true"
