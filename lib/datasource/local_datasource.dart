@@ -161,7 +161,7 @@ class LocalDatasourceImp implements LocalDatasource {
 
         print("Book inserted: ${book.title}");
       }
-    } on FormatException catch (e) {
+    } on FormatException {
       throw ServerException('Please select a valid epub file');
     } catch (e) {
       throw ServerException(e.toString());

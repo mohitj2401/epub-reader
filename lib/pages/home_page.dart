@@ -37,9 +37,9 @@ class _HomePageState extends State<HomePage> {
         actions: [
           DropdownButtonHideUnderline(
             child: DropdownButton2(
-              customButton: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: const Icon(Icons.find_in_page),
+              customButton: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Icon(Icons.find_in_page),
               ),
               items: [
                 ...MenuItems.firstItems.map(
