@@ -8,6 +8,7 @@ import 'package:fpdart/fpdart.dart';
 abstract interface class BookRepository {
   Future<Either<Failure, List<BookModel>>> fetchBooks();
   Future<Either<Failure, List<BookModel>>> scanBooks();
+  Future<Either<Failure, void>> pickFile();
   Future<Either<Failure, List<BookModel>>> searchBooks({required String title});
   Future<Either<Failure, bool>> updateBook(
       {required int id,
@@ -71,6 +72,16 @@ class BookRepositoryImp implements BookRepository {
           lastReadPage: lastReadPage,
           highlights: highlights);
       return right(res);
+    } on ServerException catch (e) {
+      return left(Failure(e.message));
+    }
+  }
+  
+  @override
+  Future<Either<Failure, void>> pickFile() async {
+    try {
+      final books = await localDatasource.pickAndInsertFile();
+      return right(books);
     } on ServerException catch (e) {
       return left(Failure(e.message));
     }

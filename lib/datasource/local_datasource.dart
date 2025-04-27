@@ -6,11 +6,12 @@ import 'package:our_book_v2/datasource/book_datasource.dart';
 import 'package:our_book_v2/exceptions/server_exception.dart';
 import 'package:our_book_v2/models/book_model.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:image/image.dart' as imgS;
-
 
 abstract interface class LocalDatasource {
   Future<List<BookModel>> fetchBooksFromStorage();
+  Future<void> pickAndInsertFile();
 }
 
 class LocalDatasourceImp implements LocalDatasource {
@@ -118,6 +119,52 @@ class LocalDatasourceImp implements LocalDatasource {
       return books;
     } catch (e) {
       throw ServerException("Failed to fetch books: $e");
+    }
+  }
+
+  @override
+  Future<void> pickAndInsertFile() async {
+    try {
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['epub'], // ← set your desired types
+      );
+
+      if (result != null && result.files.isNotEmpty) {
+        final file = result.files.first;
+        final filePath = file.path!;
+        final bytes = file.bytes ?? await File(filePath).readAsBytes();
+
+        EpubBook epubBook = await EpubReader.readBook(bytes);
+        Uint8List? uint8list;
+        if (epubBook.CoverImage != null) {
+          // Create an image and encode it to PNG
+
+          uint8list = Uint8List.fromList(imgS.encodeJpg(epubBook.CoverImage!));
+        } else {
+          Map<String, EpubByteContentFile>? images = epubBook.Content?.Images;
+          if (images != null && images.isNotEmpty) {
+            EpubByteContentFile firstImage = images.values.first;
+            uint8list = Uint8List.fromList(firstImage.Content!);
+          }
+        }
+        BookModel book = BookModel(
+          filePath: file.path!,
+          status: "new",
+          authors: epubBook.AuthorList,
+          title: epubBook.Title ?? "Unknown",
+          image: uint8list,
+          type: "local",
+        );
+
+        await bookDataSource.insertBooks([book]);
+
+        print("Book inserted: ${book.title}");
+      }
+    } on FormatException catch (e) {
+      throw ServerException('Please select a valid epub file');
+    } catch (e) {
+      throw ServerException(e.toString());
     }
   }
 }

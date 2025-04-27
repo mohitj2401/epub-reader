@@ -7,6 +7,8 @@ final class GetBooksEvent extends BookEvent {}
 
 final class ScanBookEvent extends BookEvent {}
 
+final class AddBookEvent extends BookEvent {}
+
 final class SearchBooksEvent extends BookEvent {
   final String title;
   SearchBooksEvent({required this.title});

@@ -2,6 +2,7 @@ import 'package:our_book_v2/bloc/book_bloc.dart';
 import 'package:our_book_v2/datasource/book_datasource.dart';
 import 'package:our_book_v2/datasource/local_datasource.dart';
 import 'package:our_book_v2/repository/book_repo.dart';
+import 'package:our_book_v2/usecases/addfile_usecase.dart';
 import 'package:our_book_v2/usecases/book_usecase.dart';
 import 'package:our_book_v2/usecases/scanbooks_usecase.dart';
 import 'package:our_book_v2/usecases/search_usecase.dart';
@@ -20,6 +21,7 @@ Future<void> initDependancies() async {
   serviceLocator.registerFactory(() => SearchBooks(serviceLocator()));
   serviceLocator.registerFactory(() => ScanBooks(serviceLocator()));
   serviceLocator.registerFactory(() => UpdateBook(serviceLocator()));
+  serviceLocator.registerFactory(() => AddfileUsecase(serviceLocator()));
 
   serviceLocator.registerLazySingleton(() =>
       BookBloc(
@@ -27,6 +29,7 @@ Future<void> initDependancies() async {
         searchBooks: serviceLocator(),
         scanBooks: serviceLocator(),
         updateBook: serviceLocator(),
+        addFileUsecase: serviceLocator(),
       ));
 
   serviceLocator.registerFactory<LocalDatasource>(

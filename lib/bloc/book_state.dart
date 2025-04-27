@@ -25,3 +25,6 @@ final class UpdateBookSuccess extends BookState {
   final bool status;
   UpdateBookSuccess(this.status);
 }
+final class AddFileLoading extends BookState {}
+
+final class AddFileSuccess extends BookState {}

@@ -62,51 +62,59 @@ class _FlutterEpubViewerPageState extends State<FlutterEpubViewerPage> {
             )
           : null,
       appBar: AppBar(
-        leading: !widget.showDrawer
-            ? IconButton(
-                icon: const Icon(Icons.arrow_back_ios),
-                onPressed: () {
-                  BookModel bookModel = widget.bookModel;
-                  bookModel.highlights = hightedtexts.join("&@");
-                  bookModel.lastReadPage = currentPosition;
-                  Navigator.pop(context, bookModel);
-                })
-            : null,
+        // leading: !widget.showDrawer
+        //     ? IconButton(
+        //         icon: const Icon(Icons.arrow_back_ios),
+        //         onPressed: () {
+        //           BookModel bookModel = widget.bookModel;
+        //           bookModel.highlights = hightedtexts.join("&@");
+        //           bookModel.lastReadPage = currentPosition;
+        //           Navigator.pop(context, bookModel);
+        //         })
+        //     : null,
         // backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.bookModel.title),
-        actions: widget.showDrawer
-            ? [
-                ElevatedButton(
-                    child: const Text("Go Back"),
-                    onPressed: () {
-                      BookModel bookModel = widget.bookModel;
-                      bookModel.highlights = hightedtexts.join("&@");
-                      bookModel.lastReadPage = currentPosition;
-                      Navigator.pop(context, bookModel);
-                    }),
-                // IconButton(
-                //   icon: const Icon(Icons.bookmark),
-                //   onPressed: () {
-                //   Navigator.push(
-                //       context,
-                //       MaterialPageRoute(
-                //           builder: (context) => SearchPage(
-                //                 epubController: epubController,
-                //               )));
-                //   },
-                // ),
-              ]
-            : [],
+        // actions: widget.showDrawer
+        //     ? [
+        //         ElevatedButton(
+        //             child: const Text("Go Back"),
+        //             onPressed: () {
+        //               BookModel bookModel = widget.bookModel;
+        //               bookModel.highlights = hightedtexts.join("&@");
+        //               bookModel.lastReadPage = currentPosition;
+        //               Navigator.pop(context, bookModel);
+        //             }),
+        //         // IconButton(
+        //         //   icon: const Icon(Icons.bookmark),
+        //         //   onPressed: () {
+        //         //   Navigator.push(
+        //         //       context,
+        //         //       MaterialPageRoute(
+        //         //           builder: (context) => SearchPage(
+        //         //                 epubController: epubController,
+        //         //               )));
+        //         //   },
+        //         // ),
+        //       ]
+        //     : [],
       ),
       body: BlocListener<BookBloc, BookState>(
         listener: (context, state) {},
         child: PopScope(
           canPop: false,
           onPopInvokedWithResult: (didPop, res) {
+
             context.read<BookBloc>().add(UpdateBookEvent(
                 id: widget.bookModel.id!,
                 highlightedText: hightedtexts,
                 lastReadPage: currentPosition));
+            BookModel bookModel = widget.bookModel;
+            bookModel.highlights = hightedtexts.join("&@");
+            bookModel.lastReadPage = currentPosition;
+            if (!didPop) {
+              Navigator.pop(context, bookModel);
+            }
+
           },
           child: SafeArea(
             child: Column(

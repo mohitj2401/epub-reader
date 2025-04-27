@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:our_book_v2/models/book_model.dart';
+import 'package:our_book_v2/usecases/addfile_usecase.dart';
 import 'package:our_book_v2/usecases/book_usecase.dart';
 import 'package:our_book_v2/usecases/scanbooks_usecase.dart';
 import 'package:our_book_v2/usecases/search_usecase.dart';
@@ -15,16 +16,19 @@ class BookBloc extends Bloc<BookEvent, BookState> {
   final SearchBooks _searchBooks;
   final ScanBooks _scanBooks;
   final UpdateBook _updateBook;
+  final AddfileUsecase _addfileUsecase;
 
   BookBloc({
     required GetBooks getBooks,
     required SearchBooks searchBooks,
     required ScanBooks scanBooks,
     required UpdateBook updateBook,
+      required AddfileUsecase addFileUsecase
   })  : _getBooks = getBooks,
         _searchBooks = searchBooks,
         _scanBooks = scanBooks,
         _updateBook = updateBook,
+        _addfileUsecase = addFileUsecase,
         super(BookInitial()) {
     on<BookEvent>((event, emit) {
       // TODO: implement event handler
@@ -33,6 +37,7 @@ class BookBloc extends Bloc<BookEvent, BookState> {
     on<SearchBooksEvent>(_searchAllBooks);
     on<ScanBookEvent>(_scanEpubFiles);
     on<UpdateBookEvent>(_updateBookFun);
+    on<AddBookEvent>(_addfile);
   }
   _getAllBooks(event, emit) async {
     emit(BookLoading());
@@ -72,7 +77,7 @@ class BookBloc extends Bloc<BookEvent, BookState> {
       },
     );
   }
-  
+
   _updateBookFun(event, emit) async {
     emit(BookLoading());
     final res = await _updateBook(UpdateBookParam(
@@ -89,6 +94,19 @@ class BookBloc extends Bloc<BookEvent, BookState> {
       },
       (r) {
         emit(UpdateBookSuccess(r));
+      },
+    );
+  }
+
+  _addfile(event, emit) async {
+    emit(AddFileLoading());
+    final res = await _addfileUsecase(NoParams());
+    res.fold(
+      (l) {
+        emit(BookFailure(l.message));
+      },
+      (r) {
+        emit(AddFileSuccess());
       },
     );
   }
