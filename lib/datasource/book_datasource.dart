@@ -37,7 +37,7 @@ class BookDataSourceImp implements BookDataSource {
 
     return openDatabase(
       path,
-      version: 4,
+      version: 1,
       onCreate: (db, version) async {
         await db.execute('''
       CREATE TABLE books (
@@ -49,15 +49,10 @@ class BookDataSourceImp implements BookDataSource {
         status TEXT,
         lastReadPage TEXT,
         type TEXT,
-        highlights TEXT
+        highlights TEXT,
+        isExists TINYINT
       )
         ''');
-      },
-      onUpgrade: (db, oldVersion, newVersion) async {
-        if (oldVersion < 3) {
-          // Example: add a new column 'rating'
-          await db.execute('ALTER TABLE books ADD COLUMN isExists TINYINT');
-        }
       },
     );
   }

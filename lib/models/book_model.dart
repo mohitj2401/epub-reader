@@ -57,7 +57,7 @@ class BookModel {
       "type": type,
       "id": id,
       "highlights": highlights,
-      'exists': isExits
+      'isExists': isExits
     };
   }
 
