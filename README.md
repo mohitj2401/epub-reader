@@ -16,6 +16,9 @@ A lightweight and powerful eBook reader built with Flutter to enhance your readi
 - 🔊 **Read Aloud**  
   Let the app read your books out loud using built-in text-to-speech.
 
+- 📖 **Online Dictionary Lookup**  
+  Instantly fetch word meanings from an online dictionary by selecting text in your book.
+
 ## :rocket: Technologies ##
 
 The following tools were used in this project:

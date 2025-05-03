@@ -6,6 +6,7 @@ import 'package:flutter_epub_viewer/flutter_epub_viewer.dart';
 import 'package:our_book_v2/bloc/book_bloc.dart';
 import 'package:our_book_v2/models/book_model.dart';
 import 'package:our_book_v2/pages/chapter_drawer.dart';
+import 'package:our_book_v2/services/dictionary_service.dart';
 
 class FlutterEpubViewerPage extends StatefulWidget {
   final BookModel bookModel;
@@ -21,7 +22,7 @@ class _FlutterEpubViewerPageState extends State<FlutterEpubViewerPage> {
   List<String> hightedtexts = [];
   final epubController = EpubController();
   String currentPosition = "";
-
+  String selectedText = "";
   var textSelectionCfi = '';
 
   bool isLoading = true;
@@ -35,6 +36,50 @@ class _FlutterEpubViewerPageState extends State<FlutterEpubViewerPage> {
       });
     }
     // setState(() {});
+  }
+
+  showDictionaryModel(BuildContext context, String word) {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        // Start loading immediately
+        Future.microtask(() async {
+          final service = DictionaryService();
+          final definition = await service.fetchDefinition(word);
+
+          // Pop loading dialog
+          Navigator.of(dialogContext).pop();
+
+          // Show result dialog
+          showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+              title: Text("Definition of \"$word\""),
+              content: Text(definition ?? "Definition not found."),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text("Close"),
+                ),
+              ],
+            ),
+          );
+        });
+
+        // Show loading dialog
+        return AlertDialog(
+          title: Text("Please wait"),
+          content: Row(
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(width: 16),
+              Expanded(child: Text("Fetching definition...")),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -68,7 +113,6 @@ class _FlutterEpubViewerPageState extends State<FlutterEpubViewerPage> {
         child: PopScope(
           canPop: false,
           onPopInvokedWithResult: (didPop, res) {
-
             context.read<BookBloc>().add(UpdateBookEvent(
                 id: widget.bookModel.id!,
                 highlightedText: hightedtexts,
@@ -76,10 +120,11 @@ class _FlutterEpubViewerPageState extends State<FlutterEpubViewerPage> {
             BookModel bookModel = widget.bookModel;
             bookModel.highlights = hightedtexts.join("&@");
             bookModel.lastReadPage = currentPosition;
+
             if (!didPop) {
+              print("object");
               Navigator.pop(context, bookModel);
             }
-
           },
           child: SafeArea(
             child: Column(
@@ -113,7 +158,6 @@ class _FlutterEpubViewerPageState extends State<FlutterEpubViewerPage> {
                                     cfi: textSelectionCfi);
                               },
                             ),
-
                             ContextMenuItem(
                               title: "Remove Highlight",
                               id: 2,
@@ -121,6 +165,13 @@ class _FlutterEpubViewerPageState extends State<FlutterEpubViewerPage> {
                                 hightedtexts.remove(textSelectionCfi);
                                 epubController.removeHighlight(
                                     cfi: textSelectionCfi);
+                              },
+                            ),
+                            ContextMenuItem(
+                              title: "Dictionary",
+                              id: 3,
+                              action: () async {
+                                showDictionaryModel(context, selectedText);
                               },
                             ),
                           ],
@@ -148,6 +199,7 @@ class _FlutterEpubViewerPageState extends State<FlutterEpubViewerPage> {
                           print("Annotation clicked $cfi");
                         },
                         onTextSelected: (epubTextSelection) {
+                          selectedText = epubTextSelection.selectedText;
                           textSelectionCfi = epubTextSelection.selectionCfi;
                           print(textSelectionCfi);
                         },

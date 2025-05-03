@@ -54,7 +54,7 @@ class BookDataSourceImp implements BookDataSource {
         ''');
       },
       onUpgrade: (db, oldVersion, newVersion) async {
-        if (oldVersion < 4) {
+        if (oldVersion < 3) {
           // Example: add a new column 'rating'
           await db.execute('ALTER TABLE books ADD COLUMN isExists TINYINT');
         }
