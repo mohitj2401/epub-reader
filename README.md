@@ -1,16 +1,39 @@
-# our_book_v2
+# 📚 EPUB Reader
 
-A new Flutter project.
+A lightweight and powerful eBook reader built with Flutter to enhance your reading experience.
 
-## Getting Started
+## ✨ Features
 
-This project is a starting point for a Flutter application.
+- 📌 **Resume Reading**  
+  Automatically remembers your last read location in every book.
 
-A few resources to get you started if this is your first Flutter project:
+- 🖍️ **Highlight Text**  
+  Mark important passages to revisit anytime.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- 📋 **Copy & Share**  
+  Select any text and copy or share it instantly.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- 🔊 **Read Aloud**  
+  Let the app read your books out loud using built-in text-to-speech.
+
+## :rocket: Technologies ##
+
+The following tools were used in this project:
+
+- [Flutter](https://flutter.dev/)
+
+
+## 🚀 Getting Started
+
+```bash
+# Clone this project
+$ git clone https://github.com/mohitj2401/epub-reader.git
+
+# Access
+$ cd epub-reader
+
+# Install dependencies
+$ flutter pub get
+
+# Run
+$ flutter run

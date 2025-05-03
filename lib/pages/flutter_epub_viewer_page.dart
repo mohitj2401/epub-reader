@@ -160,19 +160,19 @@ class _FlutterEpubViewerPageState extends State<FlutterEpubViewerPage> {
                               },
                             ),
 
-                            ContextMenuItem(
-                              title: "Dictionary",
-                              id: 3,
-                              action: () async {
-                                var meanings =
-                                    await FreeDictionary.getWordMeaning(
-                                        word: "stairs");
-                                // print meanings
-                                for (var val in meanings) {
-                                  print(val);
-                                }
-                              },
-                            ),
+                            // ContextMenuItem(
+                            //   title: "Dictionary",
+                            //   id: 3,
+                            //   action: () async {
+                            //     var meanings =
+                            //         await FreeDictionary.getWordMeaning(
+                            //             word: "stairs");
+                            //     // print meanings
+                            //     for (var val in meanings) {
+                            //       print(val);
+                            //     }
+                            //   },
+                            // ),
                             // ContextMenuItem(
                             //   title: "Bookmark",
                             //   id: 2,
