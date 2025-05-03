@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_epub_viewer/flutter_epub_viewer.dart';
-import 'package:free_english_dictionary/free_english_dictionary.dart';
 import 'package:our_book_v2/bloc/book_bloc.dart';
 import 'package:our_book_v2/models/book_model.dart';
 import 'package:our_book_v2/pages/chapter_drawer.dart';
@@ -62,41 +61,7 @@ class _FlutterEpubViewerPageState extends State<FlutterEpubViewerPage> {
             )
           : null,
       appBar: AppBar(
-        // leading: !widget.showDrawer
-        //     ? IconButton(
-        //         icon: const Icon(Icons.arrow_back_ios),
-        //         onPressed: () {
-        //           BookModel bookModel = widget.bookModel;
-        //           bookModel.highlights = hightedtexts.join("&@");
-        //           bookModel.lastReadPage = currentPosition;
-        //           Navigator.pop(context, bookModel);
-        //         })
-        //     : null,
-        // backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.bookModel.title),
-        // actions: widget.showDrawer
-        //     ? [
-        //         ElevatedButton(
-        //             child: const Text("Go Back"),
-        //             onPressed: () {
-        //               BookModel bookModel = widget.bookModel;
-        //               bookModel.highlights = hightedtexts.join("&@");
-        //               bookModel.lastReadPage = currentPosition;
-        //               Navigator.pop(context, bookModel);
-        //             }),
-        //         // IconButton(
-        //         //   icon: const Icon(Icons.bookmark),
-        //         //   onPressed: () {
-        //         //   Navigator.push(
-        //         //       context,
-        //         //       MaterialPageRoute(
-        //         //           builder: (context) => SearchPage(
-        //         //                 epubController: epubController,
-        //         //               )));
-        //         //   },
-        //         // ),
-        //       ]
-        //     : [],
       ),
       body: BlocListener<BookBloc, BookState>(
         listener: (context, state) {},
@@ -128,7 +93,6 @@ class _FlutterEpubViewerPageState extends State<FlutterEpubViewerPage> {
                     children: [
                       EpubViewer(
                         initialCfi: widget.bookModel.lastReadPage,
-                        // initialCfi: "epubcfi(/6/20!/4/58/1:208)",
                         epubSource: EpubSource.fromFile(
                             File(widget.bookModel.filePath)),
                         epubController: epubController,
@@ -159,27 +123,6 @@ class _FlutterEpubViewerPageState extends State<FlutterEpubViewerPage> {
                                     cfi: textSelectionCfi);
                               },
                             ),
-
-                            // ContextMenuItem(
-                            //   title: "Dictionary",
-                            //   id: 3,
-                            //   action: () async {
-                            //     var meanings =
-                            //         await FreeDictionary.getWordMeaning(
-                            //             word: "stairs");
-                            //     // print meanings
-                            //     for (var val in meanings) {
-                            //       print(val);
-                            //     }
-                            //   },
-                            // ),
-                            // ContextMenuItem(
-                            //   title: "Bookmark",
-                            //   id: 2,
-                            //   action: () async {
-                            //     // epubController.(cfi: textSelectionCfi);
-                            //   },
-                            // ),
                           ],
                           settings: ContextMenuSettings(
                               hideDefaultSystemContextMenuItems: false),

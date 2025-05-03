@@ -83,7 +83,7 @@ class BookModel {
       lastReadPage: lastReadPage ?? this.lastReadPage,
       id: id ?? this.id,
       highlights: highlights ?? this.highlights,
-      isExits: isExits ?? this.isExits,
+      isExits: isExits ?? isExits,
     );
   }
 }

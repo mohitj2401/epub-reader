@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
           bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -44,25 +44,25 @@ class _HomePageState extends State<HomePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Update Book"),
+                    const Text("Update Book"),
                     IconButton(
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        icon: Icon(Icons.close)),
+                        icon: const Icon(Icons.close)),
                   ],
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 TextFormField(
                   controller: title,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       border: OutlineInputBorder(), labelText: "Book Title"),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 TextFormField(
                   controller: authors,
                   maxLines: 2,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: "Book Authors ( ',' seperated)"),
                 ),
@@ -76,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                       book.title = title.text;
                       Navigator.pop(context, book);
                     },
-                    child: Text("Submit"))
+                    child: const Text("Submit"))
               ],
             ),
           ),
@@ -261,7 +261,7 @@ class _HomePageState extends State<HomePage> {
                               books[index] = res;
                             }
                           },
-                          backgroundColor: Color(0xFF21B7CA),
+                          backgroundColor: const Color(0xFF21B7CA),
                           foregroundColor: Colors.white,
                           icon: Icons.edit,
                           label: 'Edit',
