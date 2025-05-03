@@ -87,6 +87,7 @@ class BookBloc extends Bloc<BookEvent, BookState> {
       title: event.title,
       lastReadPage: event.lastReadPage,
       authors: event.authors,
+      exists: event.isExists,
     ));
     res.fold(
       (l) {

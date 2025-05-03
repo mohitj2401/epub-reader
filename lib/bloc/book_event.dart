@@ -21,6 +21,7 @@ final class UpdateBookEvent extends BookEvent {
   final String? status;
   final String? lastReadPage;
   final List<String>? authors;
+  final bool? isExists;
   UpdateBookEvent({
     required this.id,
     this.highlightedText,
@@ -28,5 +29,6 @@ final class UpdateBookEvent extends BookEvent {
     this.status,
     this.lastReadPage,
     this.authors,
+    this.isExists,
   });
 }

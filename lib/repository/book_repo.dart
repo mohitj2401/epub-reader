@@ -16,7 +16,8 @@ abstract interface class BookRepository {
       List<String>? newAuthors,
       List<String>? highlights,
       String? status,
-      String? lastReadPage});
+      String? lastReadPage,
+      bool? exists});
 }
 
 class BookRepositoryImp implements BookRepository {
@@ -62,7 +63,8 @@ class BookRepositoryImp implements BookRepository {
       List<String>? newAuthors,
       List<String>? highlights,
       String? status,
-      String? lastReadPage}) async {
+      String? lastReadPage,
+      bool? exists}) async {
     try {
       final res = await bookDataSource.updateBookDetails(
           id: id,
@@ -70,7 +72,8 @@ class BookRepositoryImp implements BookRepository {
           newAuthors: newAuthors,
           status: status,
           lastReadPage: lastReadPage,
-          highlights: highlights);
+          highlights: highlights,
+          exists: exists);
       return right(res);
     } on ServerException catch (e) {
       return left(Failure(e.message));

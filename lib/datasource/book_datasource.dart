@@ -17,7 +17,8 @@ abstract interface class BookDataSource {
       List<String>? newAuthors,
       List<String>? highlights,
       String? status,
-      String? lastReadPage});
+      String? lastReadPage,
+      bool? exists});
 }
 
 class BookDataSourceImp implements BookDataSource {
@@ -36,7 +37,7 @@ class BookDataSourceImp implements BookDataSource {
 
     return openDatabase(
       path,
-      version: 3,
+      version: 4,
       onCreate: (db, version) async {
         await db.execute('''
       CREATE TABLE books (
@@ -52,6 +53,12 @@ class BookDataSourceImp implements BookDataSource {
       )
         ''');
       },
+      onUpgrade: (db, oldVersion, newVersion) async {
+        if (oldVersion < 4) {
+          // Example: add a new column 'rating'
+          await db.execute('ALTER TABLE books ADD COLUMN isExists TINYINT');
+        }
+      },
     );
   }
 
@@ -60,7 +67,7 @@ class BookDataSourceImp implements BookDataSource {
     try {
       final db = await database;
       final result = await db.query('books');
-      logger.d(result.length);
+      // logger.d(result.length);
       return result.map((e) => BookModel.fromMap(e)).toList();
     } catch (e) {
       throw ServerException("Failed to fetch books: $e");
@@ -138,10 +145,11 @@ class BookDataSourceImp implements BookDataSource {
       List<String>? newAuthors,
       List<String>? highlights,
       String? status,
-      String? lastReadPage}) async {
+      String? lastReadPage,
+      bool? exists}) async {
     try {
       final db = await database;
-
+      // print(exists);
       // Prepare the update map
       final Map<String, Object?> updateFields = {};
       if (lastReadPage != null) updateFields['lastReadPage'] = lastReadPage;
@@ -150,10 +158,12 @@ class BookDataSourceImp implements BookDataSource {
       if (highlights != null) {
         updateFields['highlights'] = highlights.join('&@');
       }
+      if (exists != null) {
+        updateFields['isExists'] = exists ? 1 : 0;
+      }
       if (newAuthors != null) updateFields['authors'] = newAuthors.join(',');
 
       if (updateFields.isEmpty) return false; // Nothing to update
-
       await db.update(
         'books',
         updateFields,

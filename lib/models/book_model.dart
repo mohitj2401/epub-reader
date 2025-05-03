@@ -10,6 +10,7 @@ class BookModel {
   String? lastReadPage;
   String? highlights;
   String? type;
+  bool? isExits;
 
   BookModel({
     required this.filePath,
@@ -21,6 +22,7 @@ class BookModel {
     required this.type,
     this.id,
     this.highlights,
+    this.isExits,
   });
 
   factory BookModel.fromMap(Map<String, dynamic> map) {
@@ -40,6 +42,7 @@ class BookModel {
       status: map['status'],
       lastReadPage: map['lastReadPage'],
       type: map["type"],
+      isExits: map["isExists"] == 0 ? false : true,
     );
   }
 
@@ -54,6 +57,7 @@ class BookModel {
       "type": type,
       "id": id,
       "highlights": highlights,
+      'exists': isExits
     };
   }
 
@@ -67,6 +71,7 @@ class BookModel {
     String? lastReadPage,
     int? id,
     String? highlights,
+    bool? isExists,
   }) {
     return BookModel(
       filePath: filePath ?? this.filePath,
@@ -78,6 +83,7 @@ class BookModel {
       lastReadPage: lastReadPage ?? this.lastReadPage,
       id: id ?? this.id,
       highlights: highlights ?? this.highlights,
+      isExits: isExits ?? this.isExits,
     );
   }
 }

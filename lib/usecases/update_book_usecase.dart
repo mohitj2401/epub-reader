@@ -10,7 +10,7 @@ class UpdateBook implements UseCase<bool, UpdateBookParam> {
   UpdateBook(this.bookRepository);
 
   @override
-  Future<Either<Failure,bool>> call(params) {
+  Future<Either<Failure, bool>> call(params) {
     return bookRepository.updateBook(
       id: params.id,
       status: params.status,
@@ -18,6 +18,7 @@ class UpdateBook implements UseCase<bool, UpdateBookParam> {
       newTitle: params.title,
       lastReadPage: params.lastReadPage,
       newAuthors: params.authors,
+      exists: params.exists,
     );
   }
 }
@@ -29,6 +30,7 @@ class UpdateBookParam {
   final String? status;
   final String? lastReadPage;
   final List<String>? authors;
+  final bool? exists;
   UpdateBookParam({
     required this.id,
     this.highlightedText,
@@ -36,5 +38,6 @@ class UpdateBookParam {
     this.status,
     this.lastReadPage,
     this.authors,
+    this.exists,
   });
 }
